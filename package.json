@@ -1,0 +1,15 @@
+{
+  "name": "wineaux",
+  "version": "1.0.0",
+  "description": "node capstone thinkful",
+  "main": "server.js",
+  "scripts": {
+    "start": "nodemon server.js",
+    "test": "mocha ./test"
+  },
+  "author": "Kinuyo Fujikawa",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.14.1"
+  }
+}
