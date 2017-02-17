@@ -18,3 +18,14 @@ describe("/", function(){
 			});
 	});
 });
+
+describe("/vault", function(){
+	it("should return a 200 status code and HTML on GET", function(){
+		return chai.request(app)
+			.get("/vault")
+			.then(function(res){
+				res.should.have.status(200);
+				res.should.be.html;
+			});
+	});
+});
