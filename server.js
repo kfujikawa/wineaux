@@ -2,13 +2,17 @@ const express = require("express");
 const app = express();
 const mongoose = require("mongoose");
 const {PORT, DATABASE_URL} = require('./config');
+const wineRouter = require("./wineRouter");
 
 app.use(express.static("public"));
+
 mongoose.Promise = global.Promise;
 
 app.get('/', (req, res) => {
   res.sendFile(__dirname + "/public/views/index.html");
 });
+
+app.use("/vault", wineRouter);
 
 // app.listen(process.env.PORT || 8080);
 
