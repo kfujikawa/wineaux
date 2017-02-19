@@ -1,10 +1,16 @@
 const express = require("express");
-const app = express();
 const mongoose = require("mongoose");
-const {PORT, DATABASE_URL} = require('./config');
-const wineRouter = require("./wineRouter");
+const bodyParser = require("body-parser");
+const path = require("path");
 
+const app = express();
+
+const {PORT, DATABASE_URL} = require('./config');
+const router = require("./router");
+
+app.use(bodyParser.json());
 app.use(express.static("public"));
+app.use('/libs', express.static('./node_modules'));
 
 mongoose.Promise = global.Promise;
 
@@ -12,9 +18,7 @@ app.get('/', (req, res) => {
   res.sendFile(__dirname + "/public/views/index.html");
 });
 
-app.use("/vault", wineRouter);
-
-// app.listen(process.env.PORT || 8080);
+app.use("/vault", router);
 
 let server;
 
