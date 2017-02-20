@@ -27,7 +27,7 @@ controller.getWines = function (req, res) {
 
             res.status(200).json(products);
         });
-
+    // res.sendFile(__dirname + "/public/views/vault.html");
 };
 
 
@@ -74,15 +74,6 @@ controller.addComment = function (req, res) {
 
 }
 
-// DELETE (deleting entire object - "product" and any related comments)
-controller.delete = function (req, res){
-	Wine
-		.findByIdAndRemove(req.params.id)
-		.then(post => res.status(204.end())
-		.catch(err => res.status(500).json({
-			message: "Internal server error"
-		}));
-}
 // PUT (updating a comment)
 
 // CATCH ALL ENDPOINT 

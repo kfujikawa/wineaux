@@ -10,7 +10,7 @@ router.route("/")
 router.route("/:id")
     .get(controller.wineById);
 
-router.route("*")
+router.all("*")
 	.use(controller.catchAll);
 
 module.exports = router;

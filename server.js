@@ -16,7 +16,7 @@ mongoose.Promise = global.Promise;
 
 app.get('/', (req, res) => {
   res.sendFile(__dirname + "/public/views/index.html");
-});
+}); 
 
 app.use("/vault", router);
 
