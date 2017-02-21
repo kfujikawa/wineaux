@@ -14,8 +14,12 @@ app.use('/libs', express.static('./node_modules'));
 
 mongoose.Promise = global.Promise;
 
-app.get('/', (req, res) => {
+app.get('/pages/home', (req, res) => {
   res.sendFile(__dirname + "/public/views/index.html");
+}); 
+
+app.get('/pages/vault', (req, res) => {
+  res.sendFile(__dirname + "/public/views/vault.html");
 }); 
 
 app.use("/vault", router);

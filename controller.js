@@ -2,11 +2,6 @@ let Wine = require("./schema");
 let unirest = require("unirest");
 let Comment = require("./comment");
 let controller = {};
-let Client = require("./public/js/client.js")
-
-controller.getVault = function (req, res) {
-    res.sendFile(__dirname + "/public/views/vault.html");
-}
 
 controller.getWines = function (req, res) {
 
@@ -30,6 +25,30 @@ controller.getWines = function (req, res) {
             res.status(200).json(products);
         });
 };
+
+// Search wine.com api using query 
+controller.findByName = function (req, res){    
+    unirest.get(`http://services.wine.com/api/beta2/service.svc/json/catalog?search=${req.params.name}&apikey=f252db84fcd4a163d84a5635f988a433`)
+        .end(function (response) {
+
+            let products = [];
+            let resultElement = "";
+
+            for (let i = 0; i < response.body.Products.List.length; i++) {
+                let product = response.body.Products.List[i];
+                let newProduct = {};
+                newProduct.name = product.Name;
+                newProduct.varietal = product.Varietal;
+                newProduct.vineyard = product.Vineyard;
+                newProduct.vintage = product.Vintage;
+                products.push(newProduct);
+            }
+
+
+            res.status(200).json(products);
+        });
+
+}
 
 // GET wine by id
 controller.wineById = function (req, res) {

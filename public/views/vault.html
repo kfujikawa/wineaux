@@ -8,8 +8,8 @@
 <body>
 	<nav>
 		<ul>
-			<li><a href="http://localhost:8080/">Home</a></li>
-			<li><a href="http://localhost:8080/vault">Vault</a></li>
+			<li><a href="/pages/home">Home</a></li>
+			<li><a href="pages/vault">Vault</a></li>
 		</ul>
 	</nav>
 	<div class="container">
@@ -17,20 +17,17 @@
 			<h1>Vault</h1>
 		</header>
 		<main>
-			<section>
-				<h2>Caymus Napa Valley Cabernet Sauvignon 2014</h2>
-				<img src="" alt="">
-					<ul class="js-wine">
-						<li>Varietal:  Cabernet Sauvignon</li>
-						<li>Vineyard:  Caymus</li>
-						<li>Vintage:  2014</li>
-					</ul>
-			</section>
-			<div class="js-search-results"></div>
+			<h3>Search for a wine to add it to your vault and add tasting notes</h3>
+			<form>
+				<label for="search">Search</label>
+				<input type="text" name="search" id="search">
+			</form>
+			<ul class="js-search-results"></ul>
+			<h3>Wines and tasting notes</h3>
+			<ul class="js-vault-results"></ul>
 		</main>
 	</div>
 	<script src="/libs/jquery/dist/jquery.min.js"></script>
-	<script type="text/javascript" src="./controller.js"></script>
 	<script type="text/javascript" src="../js/client.js"></script>
 </body>
 </html>
