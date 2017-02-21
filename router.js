@@ -3,6 +3,9 @@ let controller = require("./controller");
 
 // This is already /vault as the root
 router.route("/")
+	.get(controller.getVault)
+
+router.route("/user")
     .get(controller.getWines)
     .post(controller.addComment);
 
