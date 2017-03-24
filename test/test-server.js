@@ -1,28 +1,29 @@
 const chai = require("chai");
 const chaiHttp = require("chai-http");
 
-const app = require("../server");
+const { app, runServer, closeServer} = require("../server");
 
 const should = chai.should();
 
 chai.use(chaiHttp);
 
-describe("/", function(){
+describe("Homepage Render", function(){
+
+before(function(){
+	return runServer();
+})
+
+after(function(){
+	return closeServer;
+})
+
+/*  1.  Make a request to /wineaux 
+	2.  Inspect the response object and make sure it has default keys/values.
+*/
 
 	it("should return a 200 status code and HTML on GET", function(){
 		return chai.request(app)
-			.get("/")
-			.then(function(res){
-				res.should.have.status(200);
-				res.should.be.html;
-			});
-	});
-});
-
-describe("/vault", function(){
-	it("should return a 200 status code and HTML on GET", function(){
-		return chai.request(app)
-			.get("/vault")
+			.get("/wineaux")
 			.then(function(res){
 				res.should.have.status(200);
 				res.should.be.html;
