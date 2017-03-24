@@ -16,7 +16,6 @@ before(function(){
 after(function(){
 	return closeServer;
 })
-
 /*  1.  Make a request to /wineaux 
 	2.  Inspect the response object and make sure it has default keys/values.
 */
