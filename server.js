@@ -14,11 +14,11 @@ app.use('/libs', express.static('./node_modules'));
 
 mongoose.Promise = global.Promise;
 
-app.get('/pages/home', (req, res) => {
+app.get('/wineaux', (req, res) => {
   res.sendFile(__dirname + "/public/views/index.html");
 }); 
 
-app.get('/pages/vault', (req, res) => {
+app.get('/wineaux/vault', (req, res) => {
   res.sendFile(__dirname + "/public/views/vault.html");
 }); 
 
