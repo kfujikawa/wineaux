@@ -4,38 +4,150 @@
 	<title>Wineaux</title>
 	<!-- Heroku Link:  https://wineaux.herokuapp.com/ -->
 	<meta name="description" content="Wineaux" charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" type="text/css" href="../css/style.css">
+<!-- Bootstrap Core CSS -->
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link href="css/business-casual.css" rel="stylesheet">
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Josefin+Slab:100,300,400,600,700,100italic,300italic,400italic,600italic,700italic" rel="stylesheet" type="text/css">
 </head>
 <body>
-	<nav>
-		<ul>
-			<li><a href="/wineaux">Home</a></li>
-			<li><a href="wineaux/vault">Vault</a></li>
-			<li><a href="wineaux/create">Sign Up</a></li>
-		</ul>
-	</nav>
-	<h1>Welcome to Wineaux</h1>
-		<h2>Merriam-Webster Definition of Wino:  A usually indigent alcoholic who is addicted especially to wine</h2>
-			<h3>Ouch!  That's not us!  We're CLASSY hence a re-branding of the term to something more sophisticated and elegant:  Wineaux.</h3>
-				<p>The path from noob to wine snob may seem fraught with peril.  What are all of these terms, varietal (types of grapes)?  Is a $5 bottle just as good as a $55 bottle (probably not)? </p>
-				<p>Like most things, the best way to learn is to dive in.  You can check out our noob list for approachable beginner friendly wines.  Be sure to add any tasting notes to your favorites.</p>
-			<h3>The Noob list:</h3>
 
-			<h3>WHITE WINES</h3>
-				<p>Initially at least, white wines are going to be your jam.  They tend to have more fruit notes and since they're served at a colder temperature, they come off milder</p>
-				<ul>
-					<li>Reisling:  Should be your first stop.  A generally, but not always, sweet white wine.  Think apples, apricot and pear flavors.  Chateau Ste Michelle and Kendall-Jackson Reisling are solid for around $10</li>
-					<li>Sauvignon Blanc/Pinot Grigio/Pinot Gris:  Fresh and bright with more tropical fruit flavors.  Not generally sweet, great with salads or lighter fare.  Geyser Peak Sauvignon Blanc Ecco Domani Pinot Grigio also around $10.</li>
-					<li>Chardonnay:  Whether you can start to get behind these is when you'll probably know if you are ready for reds.  These can vary a lot in flavor, however a hard and fast rule is if it's aged in steel it's going to be more fruity and zesty.  If it's aged in oak you're going to get more buttery notes and it will be generally the most full bodied of the whites.  Wente Riva Ranch Chardonnay Hess Chardonnay</li>
-				</ul>
-			<h3>RED WINES</h3>
-				<p>Let's do this.  Red wines are, IMHO, much more complex.  You start to get flavors like tobacco, minerals, and berries.  They can handle more robust food pairings.</p>
-				<ul>
-					<li>Pinot Noir:  Nice light color and generally the lightest body red wine.  You'll get more tart berry flavors that make this more acidic and not generally tannic (chalky dry mouthfeel).  Wild Horese Pinot Noir, Decoy Pinot Noir $20 range</li>
-					<li>Syrah/Shiraz:  Dark fruit flavors and getting into chocolate and tobacco notes.  Yellow Tail Shiraz $10</li>
-					<li>Cabernet Sauvignon:  Again, we're at a crossroads.  If you were on board with the tannins in the Pinot Noir, then welcome home!  Here you get generally more tannic, but also velvety mouthfeels.  Flavors range from dark berry to mineral and green peppercorn.  All more well suited to a hardy steak, or a good pasta and tomato based sauce.  Josh Cellars Cabernet Sauvignon $10, Justin Cabernet Sauvignon $25</li>
-				</ul>
-	<a href="wineaux/vault">Enter The Vault</a>
+    <div class="brand">Wineaux</div>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-default" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <!-- navbar-brand is hidden on larger screens, but visible when the menu is collapsed -->
+                <a class="navbar-brand" href="index.html">Wineaux</a>
+            </div>
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+                <ul class="nav navbar-nav">
+                    <li>
+                        <a href="index.html">Home</a>
+                    </li>
+                    <li>
+                        <a href="wineaux/vault.html">Vault</a>
+                    </li>
+                    <li>
+                        <a href="wineaux/user.html">Blog</a>
+                    </li>
+                    <li>
+                        <a href="contact.html">Contact</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- /.navbar-collapse -->
+        </div>
+        <!-- /.container -->
+    </nav>
+
+    <div class="container">
+
+        <div class="row">
+            <div class="box">
+                <div class="col-lg-12 text-center">
+                        <!-- Wrapper for slides -->
+                            <div class="item">
+                                <img class="img-responsive img-full" src="img/slide-2.jpg" alt="">
+                            </div>
+                        <!-- Controls -->
+                    <h2 class="brand-before">
+                        <small>Welcome to</small>
+                    </h2>
+                    <h1 class="brand-name">Wineaux</h1>
+                    <hr class="tagline-divider">
+                    <h2>
+                        <small>Cheers!
+                            <strong>Let's start your wine journey</strong>
+                        </small>
+                    </h2>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="box">
+                <div class="col-lg-12">
+                    <hr>
+                    <h2 class="intro-text text-center">Merriam-Webster Definition of Wino: 
+                        <strong>A usually indigent alcoholic who is addicted especially to wine</strong>
+                    </h2>
+                    <hr>
+                    <img class="img-responsive img-border img-left" src="img/intro-pic.jpg" alt="">
+                    <hr class="visible-xs">
+                    <h3>Ouch!  That's not us!  We're CLASSY hence a re-branding of the term to something more sophisticated and elegant:  Wineaux.</h3>
+                    <p>The path from noob to wine snob may seem fraught with peril.  What are all of these terms, varietal (types of grapes)?  Is a $5 bottle just as good as a $55 bottle (probably not)? </p>
+					<p>Like most things, the best way to learn is to dive in.  You can check out our noob list for approachable beginner friendly wines.  Be sure to add any tasting notes to your favorites.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="box">
+                <div class="col-lg-12">
+                    <hr>
+                    <h2 class="intro-text text-center">The Noob list:
+                        <strong>A place to start</strong>
+                    </h2>
+                    <hr>
+                    <h3>WHITE WINES</h3>
+                    <p>Initially at least, white wines are going to be your jam.  They tend to have more fruit notes and since they're served at a colder temperature, they come off milder</p>
+					<ul>
+						<li>Reisling:  Should be your first stop.  A generally, but not always, sweet white wine.  Think apples, apricot and pear flavors.  Chateau Ste Michelle and Kendall-Jackson Reisling are solid for around $10</li>
+						<li>Sauvignon Blanc/Pinot Grigio/Pinot Gris:  Fresh and bright with more tropical fruit flavors.  Not generally sweet, great with salads or lighter fare.  Geyser Peak Sauvignon Blanc Ecco Domani Pinot Grigio also around $10.</li>
+						<li>Chardonnay:  Whether you can start to get behind these is when you'll probably know if you are ready for reds.  These can vary a lot in flavor, however a hard and fast rule is if it's aged in steel it's going to be more fruity and zesty.  If it's aged in oak you're going to get more buttery notes and it will be generally the most full bodied of the whites.  Wente Riva Ranch Chardonnay Hess Chardonnay</li>
+					</ul>
+					<h3>RED WINES</h3>
+					<p>Let's do this.  Red wines are, IMHO, much more complex.  You start to get flavors like tobacco, minerals, and berries.  They can handle more robust food pairings.</p>
+					<ul>
+						<li>Pinot Noir:  Nice light color and generally the lightest body red wine.  You'll get more tart berry flavors that make this more acidic and not generally tannic (chalky dry mouthfeel).  Wild Horese Pinot Noir, Decoy Pinot Noir $20 range</li>
+						<li>Syrah/Shiraz:  Dark fruit flavors and getting into chocolate and tobacco notes.  Yellow Tail Shiraz $10</li>
+						<li>Cabernet Sauvignon:  Again, we're at a crossroads.  If you were on board with the tannins in the Pinot Noir, then welcome home!  Here you get generally more tannic, but also velvety mouthfeels.  Flavors range from dark berry to mineral and green peppercorn.  All more well suited to a hardy steak, or a good pasta and tomato based sauce.  Josh Cellars Cabernet Sauvignon $10, Justin Cabernet Sauvignon $25</li>
+					</ul>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <!-- /.container -->
+
+    <footer>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <p>Copyright &copy; Kinuyo Fujikawa 2017</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- jQuery -->
+    <script src="js/jquery.js"></script>
+
+    <!-- Bootstrap Core JavaScript -->
+    <script src="js/bootstrap.min.js"></script>
+
+    <!-- Script to Activate the Carousel -->
+<!--     <script>
+    $('.carousel').carousel({
+        interval: 5000 //changes the speed
+    })
+    </script> -->
 	<script src="/libs/jquery/dist/jquery.min.js"></script>
 	<script type="text/javascript" src="../js/client.js"></script>
 </body>
