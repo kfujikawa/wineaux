@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<title>Wineaux User Vault</title>
-	<meta name="description" content="Wineaux" charset="UTF-8">
+	<title>Create User</title>
+	<meta name="description" charset="UTF-8">
 	<link rel="stylesheet" type="text/css" href="../css/style.css">
 </head>
 <body>
@@ -14,17 +14,18 @@
 	</nav>
 	<div class="container">
 		<header>
-			<h1>Vault</h1>
+			<h1>Sign up</h1>
 		</header>
 		<main>
-			<h2>Search for a wine to add it to your vault and add tasting notes</h2>
-			<form name="searchform" id="searchform">
-				<label for="search">Search</label>
-				<input type="text" name="search" id="search">
-			</form>
-			<ul class="js-search-results"></ul>
-			<h3>Wines and tasting notes</h3>
-			<ul class="js-vault-results"></ul>
+			<div>
+				<form name="createform" id="createform"> 
+					<label>First Name:</label>
+			        <input type="text" id="name">
+			        <label>Last Name:</label>
+			        <input type="text" id="lastName">
+			        <button>Sign Up!</button>
+				</form>
+			</div>
 		</main>
 	</div>
 	<script src="/libs/jquery/dist/jquery.min.js"></script>

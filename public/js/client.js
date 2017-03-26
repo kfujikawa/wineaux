@@ -9,7 +9,7 @@ $(document).ready(function () {
         });
 });
 
-$('form').submit(function (event) {
+$('#searchform').submit(function (event) {
     event.preventDefault();
 
     var query = $('#search').val();
@@ -29,4 +29,20 @@ $('form').submit(function (event) {
     });
 });
 
-// on click add it to the list of ids
+$('#createform').submit(function (event) {
+    console.log($(this).find("#name").val());
+    console.log($(this).find("#lastName").val());
+    event.preventDefault();
+    $.ajax({
+        url: "/wineaux/create",
+        method: "POST",
+        data: {
+            name: $(this).find("#name").val(),
+            lastName: $(this).find("#lastName").val()
+        },
+    }).done(function (response) {
+        console.log(response);
+    }).fail(function (failed) {
+        console.log(failed);
+    })
+});
