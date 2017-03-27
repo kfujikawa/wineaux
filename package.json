@@ -4,14 +4,16 @@
   "description": "node capstone thinkful",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js",
+    "start": "nodemon server.js",
     "test": "mocha ./test"
   },
   "author": "Kinuyo Fujikawa",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.16.1",
+    "connect-mongo": "^1.3.2",
     "express": "^4.14.1",
+    "express-session": "^1.15.2",
     "jquery": "^3.1.1",
     "mongoose": "^4.8.3",
     "unirest": "^0.5.1"
