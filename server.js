@@ -25,6 +25,10 @@ app.use(session({
 
 mongoose.Promise = global.Promise;
 
+app.get('/', (req, res) => {
+  res.sendFile(__dirname + "/public/views/index.html");
+});
+
 app.get('/vault', (req, res) => {
   res.sendFile(__dirname + "/public/views/vault.html");
 });
