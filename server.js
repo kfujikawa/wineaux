@@ -29,8 +29,12 @@ app.get('/vault', (req, res) => {
   res.sendFile(__dirname + "/public/views/vault.html");
 });
 
-app.get('/create', (req, res) => {
+app.get('/user', (req, res) => {
   res.sendFile(__dirname + "/public/views/user.html");
+});
+
+app.get('/contact', (req, res) => {
+  res.sendFile(__dirname + "/public/views/contact.html");
 });
 
 app.use("/vault", router);

@@ -60,6 +60,8 @@ controller.wineById = function (req, res) {
 
 }
 
+
+// POST save wine to vault and add comment per wine
 controller.saveWine = function (req, res) {
     var wines = req.session.wines || [];
 
@@ -68,7 +70,7 @@ controller.saveWine = function (req, res) {
         .status(201)
         .json(wines);
 }
-// POST
+
 controller.addComment = function (req, res) {
 
     Comment
@@ -87,7 +89,13 @@ controller.addComment = function (req, res) {
 
 }
 
-// PUT (updating a comment) CATCH ALL ENDPOINT
+// PUT update a comment
+
+
+// DELETE remove a wine from vault and remove a comment per wine
+
+
+// CATCH ALL ENDPOINT
 controller.catchAll = function (req, res) {
     res
         .status(404)
