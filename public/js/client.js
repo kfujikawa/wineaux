@@ -77,7 +77,9 @@ function displayVault(wine){
 
 function addComment(comment){
     $('#target').submit(function(event) {
+        event.preventDefault();
         //add comment to req.body.comment
+        console.log(comment);
     })
 }
 

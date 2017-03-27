@@ -33,6 +33,10 @@ app.get('/user', (req, res) => {
   res.sendFile(__dirname + "/public/views/user.html");
 });
 
+app.get('/contact', (req, res) => {
+  res.sendFile(__dirname + "/public/views/contact.html");
+});
+
 app.use("/vault", router);
 
 app.all('*', (req, res) => {
