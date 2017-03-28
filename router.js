@@ -4,8 +4,15 @@ let controller = require("./controller");
 // This is already /vault as the root
 router
     .route("/")
-    .get(controller.getWines)
     .post(controller.saveWine);
+
+router
+    .route('/wines')
+    .get(controller.getWines);
+
+router
+    .route('/wines/comment')
+    .post(controller.addComment);
 
 // This is /vault/search/:name
 router
