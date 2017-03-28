@@ -3,7 +3,18 @@ let unirest = require("unirest");
 let Comment = require("./comment");
 let controller = {};
 
-controller.getWines = function (req, res) {};
+controller.getWines = function (req, res) {
+    console.log('get wines');
+    if (req.session.hasOwnProperty('wines')) {
+        return res
+            .status(200)
+            .json(req.session.wines);
+    }
+
+    res
+        .status(200)
+        .json([]);
+};
 
 // Search wine.com api using query
 controller.findByName = function (req, res) {
@@ -60,42 +71,54 @@ controller.wineById = function (req, res) {
 
 }
 
-
 // POST save wine to vault and add comment per wine
 controller.saveWine = function (req, res) {
-    var wines = req.session.wines || [];
 
-    wines.push(req.body);
+    req.session.wines = req.session.wines || [];
+
+    const wines = req.session.wines;
+    if (wines.length) {
+        for (var i = 0; i < wines.length; i += 1) {
+            if (wines[i].id === req.body.id) {
+                res
+                    .status(500)
+                    .json({message: "That wine already exists"});
+            }
+        }
+    }
+
+    req
+        .session
+        .wines
+        .push(req.body);
     res
         .status(201)
-        .json(wines);
+        .json(req.session.wines);
 }
 
 controller.addComment = function (req, res) {
 
-    Comment
-        .create({
-            wine_id: req.body.wine_id,
-            comment: req.body.comment
-        }, function (error, created) {
-            if (error) {
-                console.log(error);
-            } else {
+    req.session.wines = req.session.wines || [];
+
+    const wines = req.session.wines;
+
+    if (wines.length) {
+        for (var i = 0; i < wines.length; i += 1) {
+            if (parseInt(wines[i].id) === parseInt(req.body.id)) {
+
+                delete req.body.id;
+                wines[i].comments = wines[i].comments || [];
+                wines[i]
+                    .comments
+                    .push(req.body);
                 res
                     .status(201)
-                    .end();
+                    .json(wines);
             }
-        });
-
+        }
+    }
 }
 
-// PUT update a comment
-
-
-// DELETE remove a wine from vault and remove a comment per wine
-
-
-// CATCH ALL ENDPOINT
 controller.catchAll = function (req, res) {
     res
         .status(404)
