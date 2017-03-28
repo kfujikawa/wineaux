@@ -159,25 +159,3 @@ $('.js-search-results')
             });
         });
     });
-
-$('#createform').submit(function (event) {
-    event.preventDefault();
-    $.ajax({
-        url: "/wineaux/create",
-        method: "POST",
-        data: {
-            firstName: $(this)
-                .find("#firstName")
-                .val(),
-                lastName: $(this)
-                    .find("#lastName")
-                    .val()
-            }
-        })
-        .done(function (response) {
-            console.log(response);
-        })
-        .fail(function (failed) {
-            console.log(failed);
-        })
-});
