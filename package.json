@@ -1,6 +1,10 @@
 {
   "name": "wineaux",
   "version": "1.0.0",
+  "engines": {
+    "node": "7.3.0",
+    "npm": "4.0.5"
+  },
   "description": "node capstone thinkful",
   "main": "server.js",
   "scripts": {
