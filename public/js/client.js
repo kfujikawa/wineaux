@@ -44,8 +44,9 @@ function displayVault(wine) {
     wine.forEach( function (wine){
         // console.log(wine.name);
         var $wine_detail_template = $(
-            '<div class="col-sm-4 text-center">' + 
+            '<div class="col-lg-12">' + 
                 '<h4></h4>' + 
+                '<div class="js-wine-comment"></div>' +
                 '<form class="target">' + 
                     '<label>Tasting Notes:</label>' +
                     '<input type="text" name="comments" class="comments">' + 
@@ -60,14 +61,25 @@ function displayVault(wine) {
 }
 
 function displayComment(wine) {
+    wine.forEach( function (wine){
+        var comments = wine.comments;
+        if(comments){
+            console.log(comments);
+            comments.forEach(function (comment){
+                var $comment_detail_template = $('<div class="col-sm-4 text-center"><p></p></div>');
+                $comment_detail_template
+                    .find('p')
+                    .text(comment.comment);
 
-    var $comment_detail_template = $('<div class="col-sm-4 text-center"><p></p></div>');
-    $comment_detail_template.attr('value', wine.comment);
-    $comment_detail_template
-        .find('p')
-        .text(wine.comment);
+                $('.js-wine-comment').append($comment_detail_template);
+            })
+        
+        }else{
+            console.log("no comment for this wine");
+        }
+    })
 
-    $('.js-wine-detail').append($comment_detail_template);
+    // $comment_detail_template.attr('value', wine.comment);
 }
 
 function saveWine(wine, cb) {
@@ -111,7 +123,7 @@ var query = $('#search').val();
         .done(function (wines) {
             for (var i = 0; i < wines.length; i++) {
                 var wine = wines[i];
-                var $wine_template = $('<div class="col-sm-4 text-center"><h4><small></small></h4></div><');
+                var $wine_template = $('<div class="col-lg-12 text-center"><h4><small></small></h4></div><');
 
                 $wine_template.attr('value', wine.id);
                 $wine_template
