@@ -96,6 +96,29 @@ controller.saveWine = function (req, res) {
         .json(req.session.wines);
 }
 
+controller.deleteWine = function (req, res) {
+
+    req.session.wines = req.session.wines || [];
+
+    const wines = req.session.wines;
+    if (wines.length) {
+        for (var i = 0; i < wines.length; i += 1) {
+            if (wines[i].id === req.body.id) {
+                res
+                    .status(500)
+                    .json({message: "That wine already exists"});
+            }
+        }
+    }
+
+    req
+        .session
+        .destroy
+    res
+        .status(201)
+        .json(req.session.wines);
+}
+
 controller.addComment = function (req, res) {
 
     req.session.wines = req.session.wines || [];
