@@ -198,6 +198,7 @@ $('#searchForm').submit(function(event){
                     .find('h4')
                     .text(wine.name);
                 $('.js-search-results').append($wine_template);
+                $('.js-vault').html("Select A Wine To Add It To Vault");
             }
         })
         .fail(function (error) {
