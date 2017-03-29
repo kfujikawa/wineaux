@@ -40,46 +40,6 @@ function getSavedWines(callback) {
         });
 }
 
-function displayVault(wine) {
-    wine.forEach( function (wine){
-        // console.log(wine.name);
-        var $wine_detail_template = $(
-            '<div class="col-lg-12">' + 
-                '<h4></h4>' + 
-                '<form id="commentForm" role="form">' + 
-                '<div class="form-group">' +
-                    '<label>Add Note:</label>' +
-                    '<input type="text" class="form-control">' + 
-                '<button id="commentButton">Submit</button></form>' + 
-            '</div>');
-        $wine_detail_template.attr('value', wine.id);
-        $wine_detail_template
-            .find('h4')
-            .text(wine.name);
-        $('.js-wine-detail').append($wine_detail_template);
-    })
-}
-
-function displayComment(wine) {
-    wine.forEach( function (wine){
-        var comments = wine.comments;
-        if(comments){
-            console.log(comments);
-            comments.forEach(function (comment){
-                var $comment_detail_template = $('<div class="col-sm-4 text-center"><p></p></div>');
-                $comment_detail_template
-                    .find('p')
-                    .text(comment.comment);
-
-                $('.js-wine-comment').append($comment_detail_template);
-            })
-        
-        }else{
-            console.log("no comment for this wine");
-        }
-    })
-}
-
 function saveWine(wine, cb) {
     $.ajax({
         url: '/vault',
@@ -95,6 +55,62 @@ function saveWine(wine, cb) {
         });
 }
 
+function deleteWine(wine, cb) {
+    $.ajax({
+        url: '/vault/delete',
+        data: JSON.stringify(wine),
+            method: 'POST',
+            contentType: 'application/json'
+        })
+        .done(function (deleted) {
+            cb(true);
+        })
+        .fail(function (error) {
+            cb(false)
+        });
+}
+
+function displayVault(wine) {
+    wine.forEach( function (wine){
+        // console.log(wine.name);
+        var $wine_detail_template = $(
+            '<div class="col-lg-12">' + 
+                '<h4></h4>' + 
+                '<small class="deleteWine">Delete</small>' +
+                '<form id="commentForm" role="form">' + 
+                '<div class="form-group">' +
+                    '<label>Add Note:  </label>' +
+                    '<input type="text" class="input-sm">' + 
+                '<button id="commentButton">Submit</button></form>' + 
+            '</div>');
+        $wine_detail_template.attr('value', wine.id);
+        $wine_detail_template
+            .find('h4')
+            .text(wine.name);
+        $('.js-wine-detail').append($wine_detail_template);
+    })
+}
+
+function displayComment(wine) {
+    wine.forEach( function (wine){
+        var comments = wine.comments;
+        if(comments){
+            // console.log(comments);
+            comments.forEach(function (comment){
+                var $comment_detail_template = $('<div class="col-sm-4 text-center"><p></p></div>');
+                $comment_detail_template
+                    .find('p')
+                    .text(comment.comment);
+
+                $('.js-wine-comment').append($comment_detail_template);
+            })
+        
+        }else{
+            // console.log("no comment for this wine");
+        }
+    })
+}
+
 // ================== EVENT LISTENERS ===============================//
 
 //  Adding wine to vault
@@ -108,6 +124,7 @@ $('.js-search-results')
             }
             wine.id = id;
 
+            // Save in req.session.wine
             saveWine(wine, function (isSaved) {
                 if (isSaved) {
                     // displayVault(wine);
@@ -170,3 +187,21 @@ $('#commentForm').submit(function(event){
     //         console.log(error);
     //     });
 });
+
+// Delete wine
+$('.js-wine-detail')
+    .on('click', '.deleteWine', function () {
+        console.log("clicked");
+        var id = $(this).parent().attr('value')
+        console.log(id);
+        var wine = $(this).parent();
+        console.log(wine);
+
+        // Delete in req.session.wine
+        deleteWine(wine, function (isDeleted) {
+            if (isDeleted) {
+                // displayVault(wine);
+                console.log("wine deleted!" + id);
+            }
+        });
+    });

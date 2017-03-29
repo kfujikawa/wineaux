@@ -4,8 +4,10 @@ let Comment = require("./comment");
 let controller = {};
 
 controller.getWines = function (req, res) {
-    console.log('get wines');
+    console.log('getting wines');
+    console.log(req.session.wines);
     if (req.session.hasOwnProperty('wines')) {
+        // console.log(req.session.wines);
         return res
             .status(200)
             .json(req.session.wines);
@@ -14,6 +16,7 @@ controller.getWines = function (req, res) {
     res
         .status(200)
         .json([]);
+    console.log("no wines in vault");
 };
 
 // Search wine.com api using query
@@ -55,18 +58,18 @@ controller.wineById = function (req, res) {
             newProduct.vineyard = product.Vineyard;
             newProduct.vintage = product.Vintage;
 
-            Comment.findOne({
-                wine_id: product.Id
-            }, function (error, comments) {
-                if (error) {
-                    console.log(error);
-                } else {
-                    newProduct.comments = comments;
-                    res
-                        .status(200)
-                        .json(newProduct);
+            Comment.findOne(
+                {wine_id: product.Id}, function (error, comments) {
+                    if (error) {
+                        console.log(error);
+                    } else {
+                        newProduct.comments = comments;
+                        res
+                            .status(200)
+                            .json(newProduct);
+                    }
                 }
-            });
+            );
         });
 
 }
@@ -120,10 +123,43 @@ controller.addComment = function (req, res) {
 }
 
 
-// DELETE
+// DELETE one
 
-// PUT update comment
+controller.deleteWine = function (req, res) {
+    req.session.wines = req.session.wines || [];
 
+    const wines = req.session.wines;
+
+    if(wines.length){
+        //find the object with matching id and remove then send new json
+        Wines.findOne({
+            id: req.body.id
+        }, function (error, id) {
+            if (error) {
+                console.log(error);
+            } else {
+                delete req.body.wine
+                res
+                    .status(200)
+                    .json(newWines);
+                console.log(newWines);
+            }
+        });
+    }
+}
+
+// PUT update vault by removing target and updating req.body object
+controller.updateVault  = function (req, res){
+    let wines = req.session.wines;
+
+    wines = wines.filter(function (wine){
+        return wine.id !== id;
+    })
+
+    res
+        .status(204)
+        .json(wines);
+}
 
 controller.catchAll = function (req, res) {
     res
