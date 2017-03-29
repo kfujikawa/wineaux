@@ -10,9 +10,7 @@ $(document)
                     $('#user-vault').html('Your have <strong>' + wines.length + ' wines </strong>  in your vault.');
 
                     for (var i = 0; i < wines.length; i += 1) {
-                        var $wine_detail_template = $('<div class="col-sm-4 text-center"><h4></h4><form class="target"><label>Tasting N' +
-                                'otes:  </label><input type="text" name="comments" class="comments"><button>Submi' +
-                                't</button></form></div>');
+                        var $wine_detail_template = $('<div class="col-sm-4 text-center"><h4></h4><button>Delete</button></div>');
                         var wine = wines[i];
                         $wine_detail_template.attr('value', wine.id);
                         $wine_detail_template
@@ -61,29 +59,6 @@ $(document)
             }
 
         });
-
-        var query = $('#search').val();
-
-        $
-            .ajax({url: '/vault/search/malbec', type: 'POST'})
-            .done(function (wines) {
-                for (var i = 0; i < wines.length; i++) {
-                    var wine = wines[i];
-                    var $wine_template = $('<div class="col-sm-4 text-center"><h4><small></small></h4></div><');
-
-                    $wine_template.attr('value', wine.id);
-                    $wine_template
-                        .find('h4')
-                        .text(wine.name);
-
-                    $('.js-search-results').append($wine_template);
-
-                }
-
-            })
-            .fail(function (error) {
-                console.log(error);
-            });
     });
 
 function findById(id, callback) {
@@ -116,9 +91,7 @@ function getSavedWines(callback) {
 
 function displayVault(wine) {
 
-    var $wine_detail_template = $('<div class="col-sm-4 text-center"><h4></h4><form id="target"><label>Tasting Note' +
-            's:  </label><input type="text" name="comments" class="comments"><input type="sub' +
-            'mit" value="Save"></input></form></div>');
+    var $wine_detail_template = $('<div class="col-sm-4 text-center"><h4></h4><button>Delete</button></div>');
     $wine_detail_template.attr('value', wine.id);
     $wine_detail_template
         .find('h4')
@@ -159,3 +132,25 @@ $('.js-search-results')
             });
         });
     });
+
+// Searching wine.com API for wine and displaying results
+$('#searchForm').submit(function(event){
+    event.preventDefault();
+    var query = $('input').val();
+    $
+        .ajax({url: '/vault/search/' + query, type: 'POST'})
+        .done(function (wines) {
+            for (var i = 0; i < wines.length; i++) {
+                var wine = wines[i];
+                var $wine_template = $('<div class="col-sm-4 text-center"><h4><small></small></h4></div><');
+                $wine_template.attr('value', wine.id);
+                $wine_template
+                    .find('h4')
+                    .text(wine.name);
+                $('.js-search-results').append($wine_template);
+            }
+        })
+        .fail(function (error) {
+            console.log(error);
+        });
+})
