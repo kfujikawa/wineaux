@@ -8,7 +8,8 @@
   "description": "node capstone thinkful",
   "main": "server.js",
   "scripts": {
-    "start": "node server.js",
+    "heroku-prebuild": "npm install nodemon",
+    "start": "nodemon server.js",
     "test": "mocha ./test"
   },
   "author": "Kinuyo Fujikawa",
