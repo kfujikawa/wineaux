@@ -4,12 +4,9 @@ $(document)
             if (error) {
                 throw error;
             } 
-            else if (wine) {
+            else if(wine) {
                 displayVault(wine);
                 displayComment(wine);
-            }
-            else {
-                $('#user-vault').html('Your <strong>vault</strong> is currently empty.');
             }
         })
     })
@@ -71,24 +68,29 @@ function deleteWine(wine, cb) {
 }
 
 function displayVault(wine) {
-    wine.forEach( function (wine){
-        // console.log(wine.name);
-        var $wine_detail_template = $(
-            '<div class="col-lg-12">' + 
-                '<h4></h4>' + 
-                '<small class="deleteWine">Delete</small>' +
-                '<form id="commentForm" role="form">' + 
-                '<div class="form-group">' +
-                    '<label>Add Note:  </label>' +
-                    '<input type="text" class="input-sm">' + 
-                '<button id="commentButton">Submit</button></form>' + 
-            '</div>');
-        $wine_detail_template.attr('value', wine.id);
-        $wine_detail_template
-            .find('h4')
-            .text(wine.name);
-        $('.js-wine-detail').append($wine_detail_template);
-    })
+    if(wine.length){
+        $('#user-vault').html("You have <strong>" + wines.length + "wines </strong> in your vault");
+        wine.forEach( function (wine){
+            // console.log(wine.name);
+            var $wine_detail_template = $(
+                '<div class="col-lg-12">' + 
+                    '<h4></h4>' + 
+                    '<small class="deleteWine">Delete</small>' +
+                    '<form id="commentForm" role="form">' + 
+                    '<div class="form-group">' +
+                        '<label>Add Note:  </label>' +
+                        '<input type="text" class="input-sm">' + 
+                    '<button id="commentButton">Submit</button></form>' + 
+                '</div>');
+            $wine_detail_template.attr('value', wine.id);
+            $wine_detail_template
+                .find('h4')
+                .text(wine.name);
+            $('.js-wine-detail').append($wine_detail_template);
+        })
+    } else {
+        $('#user-vault').html('Your <strong>vault</strong> is currently empty');
+    }
 }
 
 function displayComment(wine) {

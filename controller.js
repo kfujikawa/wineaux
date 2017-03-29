@@ -123,30 +123,24 @@ controller.addComment = function (req, res) {
 }
 
 
-// DELETE one
-
 controller.deleteWine = function (req, res) {
+
     req.session.wines = req.session.wines || [];
 
     const wines = req.session.wines;
-
-    if(wines.length){
-        //find the object with matching id and remove then send new json
-        Wines.findOne({
-            id: req.body.id
-        }, function (error, id) {
-            if (error) {
-                console.log(error);
-            } else {
-                delete req.body.wine
-                res
-                    .status(200)
-                    .json(newWines);
-                console.log(newWines);
+    if (wines.length) {
+        for (var i = 0; i < wines.length; i += 1) {
+            if (wines[i].id === req.body.id) {
+                delete req.body[i]
+                console.log(req.body);
             }
-        });
+        }
     }
+    res
+        .status(201)
+        .json(req.session.wines);
 }
+
 
 // PUT update vault by removing target and updating req.body object
 controller.updateVault  = function (req, res){
