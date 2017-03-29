@@ -92,7 +92,7 @@ function deleteWine(wine, cb) {
 
 function displayVault(wine) {
     if(wine.length){
-        $('#user-vault').html("You have <strong>" + wines.length + "wines </strong> in your vault");
+        $('#user-vault').html("You have <strong>" + wine.length + "wines </strong> in your vault");
         wine.forEach( function (wine){
             // console.log(wine.name);
             var $wine_detail_template = $(
@@ -119,22 +119,22 @@ function displayVault(wine) {
 function displaySearchResults(results) {
     if(results.length){
         $('.js-vault').html("Select A Wine To Add To Vault");
-        results.forEach( function (result){
-            var $search_detail_template = $(
-                '<div class="col-lg-12">' + 
-                    '<h4></h4>' + 
-                    '<small class="deleteWine">Delete</small>' +
-                    '<form id="commentForm" role="form">' + 
-                    '<div class="form-group">' +
-                        '<label>Add Note:  </label>' +
-                        '<input type="text" class="input-sm">' + 
-                    '<button id="commentButton">Submit</button></form>' + 
-                '</div>');
-            $search_detail_template
-                .find('h4')
-                .text(wine.name);
-            $('.js-wine-detail').append($search_detail_template);
-        })
+        // results.forEach( function (result){
+        //     var $search_detail_template = $(
+        //         '<div class="col-lg-12">' + 
+        //             '<h4></h4>' + 
+        //             '<small class="deleteWine">Delete</small>' +
+        //             '<form id="commentForm" role="form">' + 
+        //             '<div class="form-group">' +
+        //                 '<label>Add Note:  </label>' +
+        //                 '<input type="text" class="input-sm">' + 
+        //             '<button id="commentButton">Submit</button></form>' + 
+        //         '</div>');
+        //     $search_detail_template
+        //         .find('h4')
+        //         .text(wine.name);
+        //     $('.js-wine-detail').append($search_detail_template);
+        // })
     } else {
         $('.js-vault').html("Search For A Wine To Add It To Vault");
     }
