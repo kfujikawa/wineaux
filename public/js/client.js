@@ -92,7 +92,13 @@ function deleteWine(wine, cb) {
 
 function displayVault(wine) {
     if(wine.length){
-        $('#user-vault').html("You have <strong>" + wine.length + "wines </strong> in your vault");
+        if(wine.length <= 1){
+            $('#user-vault').html("You have <strong>" + " " + wine.length + " " + "wine </strong> in your vault");
+        }
+        else if(wine.length > 1){
+            $('#user-vault').html("You have <strong>" + " " + wine.length + " " + "wines </strong> in your vault");
+        }
+
         wine.forEach( function (wine){
             // console.log(wine.name);
             var $wine_detail_template = $(
