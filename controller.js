@@ -119,6 +119,12 @@ controller.addComment = function (req, res) {
     }
 }
 
+
+// DELETE
+
+// PUT update comment
+
+
 controller.catchAll = function (req, res) {
     res
         .status(404)
