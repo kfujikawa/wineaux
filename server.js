@@ -18,8 +18,7 @@ app.use(session({
   saveUninitialized: false,
   secret: "Shh, its a secret!",
   store: new MongoStore({
-    url: process.env.DATABASE_URL,
-,
+    url: process.env.DATABASE_URL || 'mongodb://localhost/wineaux',
     touchAfter: 24 * 3600
   })
 }));
