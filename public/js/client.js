@@ -5,7 +5,6 @@ $(document)
                 throw error;
             } 
             else if(wine) {
-                console.log("Initial display vault wine object: " + wine);
                 displayVault(wine);
                 displayComment(wine);
             }
@@ -69,6 +68,21 @@ function saveWine(wine, cb) {
         });
 }
 
+function addComment(wine) {
+    $.ajax({
+        url: '/vault/wines/comment',
+        method: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify(commentToSend)
+        })
+        .done(function (comment) {
+            console.log(comment);
+        })
+        .fail(function (error) {
+            console.log(error);
+        });
+}
+
 function deleteWine(wine, cb) {
     $.ajax({
         url: '/vault/delete',
@@ -88,16 +102,16 @@ function displayVault(wine) {
     if(wine.length){
         $('.js-wine-detail').empty();
         if(wine.length <= 1){
-            console.log("less than 1" + wine);
+            // console.log("less than 1" + wine);
             $('#user-vault').html("You have <strong>" + " " + wine.length + " " + "wine </strong> in your vault");
         }
         else if(wine.length > 1){
-            console.log("greater than 1" + wine);
+            // console.log("greater than 1" + wine);
             $('#user-vault').html("You have <strong>" + " " + wine.length + " " + "wines </strong> in your vault");
         }
 
         wine.forEach( function (wine){
-            console.log("for each" + wine);
+            // console.log("for each" + wine);
 
             // console.log(wine.name);
             var $wine_detail_template = $(
@@ -126,24 +140,30 @@ function displayEmptySearchResults() {
 }
 
 function displayComment(wine) {
-    wine.forEach( function (wine){
-        var comments = wine.comments;
-        if(comments){
-            // console.log(comments);
-            comments.forEach(function (comment){
-                var $comment_detail_template = $('<div class="col-sm-4 text-center"><p></p></div>');
-                $comment_detail_template
-                    .find('p')
-                    .text(comment.comment);
+    if(wine.length){
 
-                $('.js-wine-comment').append($comment_detail_template);
-            })
-        
-        }else{
-            // console.log("no comment for this wine");
-        }
-    })
-}
+        wine.forEach( function (wine){
+            var comments = wine.comments;
+            console.log("these are the comments:" + comments);
+            if(comments){
+                console.log(comments);
+                comments.forEach(function (comment){
+                    var comment = comment.comment;
+
+                    var $comment_detail_template = $('<div class="col-sm-2 text-center"><p></p></div>');
+                    $comment_detail_template
+                        .find('p')
+                        .text(comment);
+                        console.log(comment);
+                    $('.js-search-detail').empty();
+                    $('.js-wine-detail').append($comment_detail_template);
+                })        
+            } else{
+            console.log("no comment for this wine");
+            }
+        })
+    }
+} //end of displayComment
 
 // ================== EVENT LISTENERS ===============================//
 
@@ -152,14 +172,14 @@ $('.js-search-results')
     .on('click', 'div', function () {
         // findById
         var id = $(this).attr('value');
-        console.log("This is the on click id" +id);
+        // console.log("This is the on click id" +id);
 
         findById(id, function (error, wine) {
             if (error) {
                 return new Error("Something went wrong.");
             }
             wine.id = id;
-            console.log("this is findbyid the wine" + wine);
+            // console.log("this is findbyid the wine" + wine);
 
             // Save in req.session.wine
             saveWine(wine, function (isSaved) {
@@ -172,7 +192,7 @@ $('.js-search-results')
                         } 
                         else if(wine) {
 
-                            console.log("Initial display vault wine object: " + wine);
+                            // console.log("Initial display vault wine object: " + wine);
                             displayVault(wine);
                             displayComment(wine);
                         }
@@ -207,20 +227,15 @@ $('#searchForm').submit(function(event){
 })
 
 // Adding a comment to wine in Vault
-$('#commentForm').submit(function(event){
+$(document).on("submit", "#commentForm", function (event){
     event.preventDefault();
-
-    var id = $(this)
-        .parent()
-        .attr('value');
+    var id = $(this).parent().attr('value');
+    console.log(id);
 
     var commentToSend = {
         id: id,
-        comment: $(this)
-            .find('input')
-            .val()
-    };
-
+        comment: $(this).find('input').val()
+    }
     console.log(commentToSend);
 
     $
@@ -230,13 +245,13 @@ $('#commentForm').submit(function(event){
             contentType: 'application/json',
             data: JSON.stringify(commentToSend)
         })
-        .done(function (comment) {
+        .done(function(comment){
             console.log(comment);
         })
-        .fail(function (error) {
+        .fail(function(error){
             console.log(error);
         });
-});
+})
 
 // Delete wine
 // $('.js-wine-detail')

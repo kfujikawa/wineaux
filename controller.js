@@ -97,7 +97,6 @@ controller.saveWine = function (req, res) {
     res
         .status(201)
         .json(req.session.wines);
-    console.log("saveWine" + req.session.wines);
 }
 
 controller.addComment = function (req, res) {
@@ -133,7 +132,7 @@ controller.deleteWine = function (req, res) {
         for (var i = 0; i < wines.length; i += 1) {
             if (wines[i].id === req.body.id) {
                 delete req.body[i]
-                console.log(req.body);
+                // console.log(req.body);
             }
         }
     }
