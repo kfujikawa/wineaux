@@ -1,93 +1,25 @@
 $(document)
     .ready(function () {
-
-        getSavedWines(function (error, wines) {
+        getSavedWines(function (error, wine){
             if (error) {
                 throw error;
-            } else {
-                if (wines.length) {
-                    console.log(wines);
-                    $('#user-vault').html('Your have <strong>' + wines.length + ' wines </strong>  in your vault.');
-
-                    for (var i = 0; i < wines.length; i += 1) {
-                        var $wine_detail_template = $('<div class="col-sm-4 text-center"><h4></h4><form class="target"><label>Tasting N' +
-                                'otes:  </label><input type="text" name="comments" class="comments"><button>Submi' +
-                                't</button></form></div>');
-                        var wine = wines[i];
-                        $wine_detail_template.attr('value', wine.id);
-                        $wine_detail_template
-                            .find('h4')
-                            .text(wine.name);
-
-                        $wine_detail_template
-                            .find('form')
-                            .submit(function (event) {
-                                event.preventDefault();
-                                var id = $(this)
-                                    .parent()
-                                    .attr('value');
-
-                                var commentToSend = {
-                                    id: id,
-                                    comment: $(this)
-                                        .find('input')
-                                        .val()
-                                };
-
-                                console.log(commentToSend);
-
-                                $
-                                    .ajax({
-                                        url: '/vault/wines/comment',
-                                        type: 'POST',
-                                        contentType: 'application/json',
-                                        data: JSON.stringify(commentToSend)
-                                    })
-                                    .done(function (comment) {
-                                        console.log(comment);
-                                    })
-                                    .fail(function (error) {
-                                        console.log(error);
-                                    });
-
-                            });
-
-                        $('.js-wine-detail').append($wine_detail_template);
-
-                    }
-                } else {
-                    $('#user-vault').html('Your <strong>vault</strong> is currently empty.');
-                }
+            } 
+            else if(wine) {
+                displayVault(wine);
+                displayComment(wine);
             }
-
-        });
-
-        var query = $('#search').val();
-
-        $
-            .ajax({url: '/vault/search/malbec', type: 'POST'})
-            .done(function (wines) {
-                for (var i = 0; i < wines.length; i++) {
-                    var wine = wines[i];
-                    var $wine_template = $('<div class="col-sm-4 text-center"><h4><small></small></h4></div><');
-
-                    $wine_template.attr('value', wine.id);
-                    $wine_template
-                        .find('h4')
-                        .text(wine.name);
-
-                    $('.js-search-results').append($wine_template);
-
-                }
-
-            })
-            .fail(function (error) {
-                console.log(error);
-            });
-    });
-
+        })
+        getSearchResults( function (error, results){
+            if (error) {
+                throw error;
+            }
+            else if(results){
+                displaySearchResults(results);
+            }
+        })
+    })
+// ================== METHODS ===============================//
 function findById(id, callback) {
-
     $
         .ajax({
             url: '/vault/' + id,
@@ -100,12 +32,11 @@ function findById(id, callback) {
         .fail(function (error) {
             callback(error, null);
         });
-
 }
 
 function getSavedWines(callback) {
     $
-        .ajax("/vault/wines")
+        .ajax('/vault/wines')
         .done(function (wines) {
             callback(null, wines);
         })
@@ -114,17 +45,19 @@ function getSavedWines(callback) {
         });
 }
 
-function displayVault(wine) {
-
-    var $wine_detail_template = $('<div class="col-sm-4 text-center"><h4></h4><form id="target"><label>Tasting Note' +
-            's:  </label><input type="text" name="comments" class="comments"><input type="sub' +
-            'mit" value="Save"></input></form></div>');
-    $wine_detail_template.attr('value', wine.id);
-    $wine_detail_template
-        .find('h4')
-        .text(wine.name);
-
-    $('.js-wine-detail').append($wine_detail_template);
+function getSearchResults(callback) {
+    var query = $('#search').val();
+    $
+        .ajax({
+            url: 'vault/search/' + query,
+            type: 'POST'
+        })
+        .done(function(results){
+            callback(null, results);
+        })
+        .fail(function(error){
+            callback(error, null);
+        });
 }
 
 function saveWine(wine, cb) {
@@ -142,6 +75,100 @@ function saveWine(wine, cb) {
         });
 }
 
+function deleteWine(wine, cb) {
+    $.ajax({
+        url: '/vault/delete',
+        data: JSON.stringify(wine),
+            method: 'POST',
+            contentType: 'application/json'
+        })
+        .done(function (deleted) {
+            cb(true);
+        })
+        .fail(function (error) {
+            cb(false)
+        });
+}
+
+function displayVault(wine) {
+    if(wine.length){
+        if(wine.length <= 1){
+            $('#user-vault').html("You have <strong>" + " " + wine.length + " " + "wine </strong> in your vault");
+        }
+        else if(wine.length > 1){
+            $('#user-vault').html("You have <strong>" + " " + wine.length + " " + "wines </strong> in your vault");
+        }
+
+        wine.forEach( function (wine){
+            // console.log(wine.name);
+            var $wine_detail_template = $(
+                '<div class="col-lg-12">' + 
+                    '<h4></h4>' + 
+                    '<small class="deleteWine">Delete Wine</small>' +
+                    '<form id="commentForm" role="form">' + 
+                    '<div class="form-group">' +
+                        '<label>Add Note:  </label>' +
+                        '<input type="text" class="input-sm">' + 
+                    '<button id="commentButton">Submit</button></form>' + 
+                '</div>');
+            $wine_detail_template.attr('value', wine.id);
+            $wine_detail_template
+                .find('h4')
+                .text(wine.name);
+            $('.js-wine-detail').append($wine_detail_template);
+        })
+    } else {
+        $('#user-vault').html('Your <strong>vault</strong> is currently empty');
+    }
+}
+
+function displaySearchResults(results) {
+    if(results.length){
+        $('.js-vault').html("Select A Wine To Add To Vault");
+        // results.forEach( function (result){
+        //     var $search_detail_template = $(
+        //         '<div class="col-lg-12">' + 
+        //             '<h4></h4>' + 
+        //             '<small class="deleteWine">Delete</small>' +
+        //             '<form id="commentForm" role="form">' + 
+        //             '<div class="form-group">' +
+        //                 '<label>Add Note:  </label>' +
+        //                 '<input type="text" class="input-sm">' + 
+        //             '<button id="commentButton">Submit</button></form>' + 
+        //         '</div>');
+        //     $search_detail_template
+        //         .find('h4')
+        //         .text(wine.name);
+        //     $('.js-wine-detail').append($search_detail_template);
+        // })
+    } else {
+        $('.js-vault').html("Search For A Wine To Add It To Vault");
+    }
+}
+
+function displayComment(wine) {
+    wine.forEach( function (wine){
+        var comments = wine.comments;
+        if(comments){
+            // console.log(comments);
+            comments.forEach(function (comment){
+                var $comment_detail_template = $('<div class="col-sm-4 text-center"><p></p></div>');
+                $comment_detail_template
+                    .find('p')
+                    .text(comment.comment);
+
+                $('.js-wine-comment').append($comment_detail_template);
+            })
+        
+        }else{
+            // console.log("no comment for this wine");
+        }
+    })
+}
+
+// ================== EVENT LISTENERS ===============================//
+
+//  Adding wine to vault
 $('.js-search-results')
     .on('click', 'div', function () {
         // findById
@@ -152,10 +179,86 @@ $('.js-search-results')
             }
             wine.id = id;
 
+            // Save in req.session.wine
             saveWine(wine, function (isSaved) {
                 if (isSaved) {
-                    displayVault(wine);
+                    // displayVault(wine);
+                    console.log("saved");
                 }
             });
         });
     });
+
+// Searching wine.com API for wine and displaying results
+$('#searchForm').submit(function(event){
+    event.preventDefault();
+    var query = $('input').val();
+    $('.js-search-results').empty();
+    $
+        .ajax({url: '/vault/search/' + query, type: 'POST'})
+        .done(function (wines) {
+            for (var i = 0; i < wines.length; i++) {
+                var wine = wines[i];
+                var $wine_template = $('<div class="col-sm-4 text-center"><h4><small></small></h4></div><');
+                $wine_template.attr('value', wine.id);
+                $wine_template
+                    .find('h4')
+                    .text(wine.name);
+                $('.js-search-results').append($wine_template);
+                $('.js-vault').html("Select A Wine To Add It To Vault");
+            }
+        })
+        .fail(function (error) {
+            console.log(error);
+        });
+})
+
+// Adding a comment to wine in Vault
+$('#commentForm').submit(function(event){
+    event.preventDefault();
+
+    var id = $(this)
+        .parent()
+        .attr('value');
+
+    var commentToSend = {
+        id: id,
+        comment: $(this)
+            .find('input')
+            .val()
+    };
+
+    console.log(commentToSend);
+
+    $
+        .ajax({
+            url: '/vault/wines/comment',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(commentToSend)
+        })
+        .done(function (comment) {
+            console.log(comment);
+        })
+        .fail(function (error) {
+            console.log(error);
+        });
+});
+
+// Delete wine
+// $('.js-wine-detail')
+//     .on('click', '.deleteWine', function () {
+//         console.log("clicked");
+//         var id = $(this).parent().attr('value')
+//         console.log(id);
+//         var wine = $(this).parent();
+//         console.log(wine);
+
+//         // Delete in req.session.wine
+//         deleteWine(wine, function (isDeleted) {
+//             if (isDeleted) {
+//                 // displayVault(wine);
+//                 console.log("wine deleted!" + id);
+//             }
+//         });
+//     });

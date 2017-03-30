@@ -4,8 +4,10 @@ let Comment = require("./comment");
 let controller = {};
 
 controller.getWines = function (req, res) {
-    console.log('get wines');
+    console.log('getting wines');
+    console.log(req.session.wines);
     if (req.session.hasOwnProperty('wines')) {
+        // console.log(req.session.wines);
         return res
             .status(200)
             .json(req.session.wines);
@@ -14,6 +16,7 @@ controller.getWines = function (req, res) {
     res
         .status(200)
         .json([]);
+    console.log("no wines in vault");
 };
 
 // Search wine.com api using query
@@ -55,18 +58,18 @@ controller.wineById = function (req, res) {
             newProduct.vineyard = product.Vineyard;
             newProduct.vintage = product.Vintage;
 
-            Comment.findOne({
-                wine_id: product.Id
-            }, function (error, comments) {
-                if (error) {
-                    console.log(error);
-                } else {
-                    newProduct.comments = comments;
-                    res
-                        .status(200)
-                        .json(newProduct);
+            Comment.findOne(
+                {wine_id: product.Id}, function (error, comments) {
+                    if (error) {
+                        console.log(error);
+                    } else {
+                        newProduct.comments = comments;
+                        res
+                            .status(200)
+                            .json(newProduct);
+                    }
                 }
-            });
+            );
         });
 
 }
@@ -117,6 +120,39 @@ controller.addComment = function (req, res) {
             }
         }
     }
+}
+
+
+controller.deleteWine = function (req, res) {
+
+    req.session.wines = req.session.wines || [];
+
+    const wines = req.session.wines;
+    if (wines.length) {
+        for (var i = 0; i < wines.length; i += 1) {
+            if (wines[i].id === req.body.id) {
+                delete req.body[i]
+                console.log(req.body);
+            }
+        }
+    }
+    res
+        .status(201)
+        .json(req.session.wines);
+}
+
+
+// PUT update vault by removing target and updating req.body object
+controller.updateVault  = function (req, res){
+    let wines = req.session.wines;
+
+    wines = wines.filter(function (wine){
+        return wine.id !== id;
+    })
+
+    res
+        .status(204)
+        .json(wines);
 }
 
 controller.catchAll = function (req, res) {

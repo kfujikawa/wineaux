@@ -7,12 +7,20 @@ router
     .post(controller.saveWine);
 
 router
+    .route("/delete")
+    .post(controller.deleteWine);
+
+router
     .route('/wines')
     .get(controller.getWines);
 
 router
     .route('/wines/comment')
     .post(controller.addComment);
+
+router
+    .route('/wines/update')
+    .put(controller.updateVault);
 
 // This is /vault/search/:name
 router
