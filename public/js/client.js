@@ -9,14 +9,7 @@ $(document)
                 displayComment(wine);
             }
         })
-        getSearchResults( function (error, results){
-            if (error) {
-                throw error;
-            }
-            else if(results){
-                displaySearchResults(results);
-            }
-        })
+        displayEmptySearchResults();
     })
 // ================== METHODS ===============================//
 function findById(id, callback) {
@@ -122,28 +115,8 @@ function displayVault(wine) {
     }
 }
 
-function displaySearchResults(results) {
-    if(results.length){
-        $('.js-vault').html("Select A Wine To Add To Vault");
-        // results.forEach( function (result){
-        //     var $search_detail_template = $(
-        //         '<div class="col-lg-12">' + 
-        //             '<h4></h4>' + 
-        //             '<small class="deleteWine">Delete</small>' +
-        //             '<form id="commentForm" role="form">' + 
-        //             '<div class="form-group">' +
-        //                 '<label>Add Note:  </label>' +
-        //                 '<input type="text" class="input-sm">' + 
-        //             '<button id="commentButton">Submit</button></form>' + 
-        //         '</div>');
-        //     $search_detail_template
-        //         .find('h4')
-        //         .text(wine.name);
-        //     $('.js-wine-detail').append($search_detail_template);
-        // })
-    } else {
-        $('.js-vault').html("Search For A Wine To Add It To Vault");
-    }
+function displayEmptySearchResults() {
+    $('.js-vault').html("Search For A Wine To Add It To Vault");
 }
 
 function displayComment(wine) {
