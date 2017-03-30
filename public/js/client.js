@@ -104,7 +104,7 @@ function displayVault(wine) {
             var $wine_detail_template = $(
                 '<div class="col-lg-12">' + 
                     '<h4></h4>' + 
-                    '<small class="deleteWine">Delete</small>' +
+                    '<small class="deleteWine">Delete Wine</small>' +
                     '<form id="commentForm" role="form">' + 
                     '<div class="form-group">' +
                         '<label>Add Note:  </label>' +
@@ -193,6 +193,7 @@ $('.js-search-results')
 $('#searchForm').submit(function(event){
     event.preventDefault();
     var query = $('input').val();
+    $('.js-search-results').empty();
     $
         .ajax({url: '/vault/search/' + query, type: 'POST'})
         .done(function (wines) {
@@ -229,35 +230,35 @@ $('#commentForm').submit(function(event){
 
     console.log(commentToSend);
 
-    // $
-    //     .ajax({
-    //         url: '/vault/wines/comment',
-    //         type: 'POST',
-    //         contentType: 'application/json',
-    //         data: JSON.stringify(commentToSend)
-    //     })
-    //     .done(function (comment) {
-    //         console.log(comment);
-    //     })
-    //     .fail(function (error) {
-    //         console.log(error);
-    //     });
+    $
+        .ajax({
+            url: '/vault/wines/comment',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(commentToSend)
+        })
+        .done(function (comment) {
+            console.log(comment);
+        })
+        .fail(function (error) {
+            console.log(error);
+        });
 });
 
 // Delete wine
-$('.js-wine-detail')
-    .on('click', '.deleteWine', function () {
-        console.log("clicked");
-        var id = $(this).parent().attr('value')
-        console.log(id);
-        var wine = $(this).parent();
-        console.log(wine);
+// $('.js-wine-detail')
+//     .on('click', '.deleteWine', function () {
+//         console.log("clicked");
+//         var id = $(this).parent().attr('value')
+//         console.log(id);
+//         var wine = $(this).parent();
+//         console.log(wine);
 
-        // Delete in req.session.wine
-        deleteWine(wine, function (isDeleted) {
-            if (isDeleted) {
-                // displayVault(wine);
-                console.log("wine deleted!" + id);
-            }
-        });
-    });
+//         // Delete in req.session.wine
+//         deleteWine(wine, function (isDeleted) {
+//             if (isDeleted) {
+//                 // displayVault(wine);
+//                 console.log("wine deleted!" + id);
+//             }
+//         });
+//     });
