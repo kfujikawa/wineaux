@@ -18,7 +18,7 @@ app.use(session({
   saveUninitialized: false,
   secret: "Shh, its a secret!",
   store: new MongoStore({
-    url: 'mongodb://localhost/wineaux',
+    url: process.env.DATABASE_URL,
     touchAfter: 24 * 3600
   })
 }));
@@ -60,20 +60,34 @@ function runServer(databaseUrl = DATABASE_URL, port = PORT) {
 }
 
 function closeServer() {
-  return mongoose
-    .disconnect()
-    .then(() => {
-      return new Promise((resolve, reject) => {
-        console.log('Closing server');
-        server.close(err => {
-          if (err) {
-            return reject(err);
-          }
-          resolve();
-        });
-      });
+  return new Promise((resolve, reject) => {
+    console.log("Closing server");
+    server.close(err => {
+      if (err) {
+        reject(err);
+        // so we don't also call `resolve()`
+        return;
+      }
+      resolve();
     });
+  });
 }
+
+// function closeServer() {
+//   return mongoose
+//     .disconnect()
+//     .then(() => {
+//       return new Promise((resolve, reject) => {
+//         console.log('Closing server');
+//         server.close(err => {
+//           if (err) {
+//             return reject(err);
+//           }
+//           resolve();
+//         });
+//       });
+//     });
+// }
 
 if (require.main === module) {
   runServer().catch(err => console.error(err));
