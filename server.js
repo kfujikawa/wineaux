@@ -18,7 +18,7 @@ app.use(session({
   saveUninitialized: false,
   secret: "Shh, its a secret!",
   store: new MongoStore({
-    url:     url: process.env.DATABASE_URL,
+    url: process.env.DATABASE_URL,
 ,
     touchAfter: 24 * 3600
   })
