@@ -122,7 +122,8 @@ function displayVault(wine) {
                     '<div class="form-group">' +
                         '<label>Add Note:  </label>' +
                         '<input type="text" class="input-sm">' + 
-                    '<button id="commentButton">Submit</button></form>' + 
+                    '<button id="commentButton">Submit</button></form>' +
+                    '<div class="col-lg-12 js-wine-comments"><div class=js-comment></div></div>' +
                 '</div>');
             $wine_detail_template.attr('value', wine.id);
             $wine_detail_template
@@ -144,19 +145,18 @@ function displayComment(wine) {
 
         wine.forEach( function (wine){
             var comments = wine.comments;
-            console.log("these are the comments:" + comments);
+            var commentsId = wine.id;
+
             if(comments){
-                console.log(comments);
                 comments.forEach(function (comment){
                     var comment = comment.comment;
 
-                    var $comment_detail_template = $('<div class="col-sm-2 text-center"><p></p></div>');
+                    var $comment_detail_template = $('<div><p></p></div>');
                     $comment_detail_template
                         .find('p')
                         .text(comment);
-                        console.log(comment);
-                    $('.js-search-detail').empty();
-                    $('.js-wine-detail').append($comment_detail_template);
+                        
+                    $('.js-comment').append($comment_detail_template);
                 })        
             } else{
             console.log("no comment for this wine");
