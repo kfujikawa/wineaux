@@ -97,6 +97,7 @@ controller.saveWine = function (req, res) {
     res
         .status(201)
         .json(req.session.wines);
+    console.log("saveWine" + req.session.wines);
 }
 
 controller.addComment = function (req, res) {

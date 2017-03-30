@@ -5,6 +5,7 @@ $(document)
                 throw error;
             } 
             else if(wine) {
+                console.log("Initial display vault wine object: " + wine);
                 displayVault(wine);
                 displayComment(wine);
             }
@@ -85,14 +86,19 @@ function deleteWine(wine, cb) {
 
 function displayVault(wine) {
     if(wine.length){
+        $('.js-wine-detail').empty();
         if(wine.length <= 1){
+            console.log("less than 1" + wine);
             $('#user-vault').html("You have <strong>" + " " + wine.length + " " + "wine </strong> in your vault");
         }
         else if(wine.length > 1){
+            console.log("greater than 1" + wine);
             $('#user-vault').html("You have <strong>" + " " + wine.length + " " + "wines </strong> in your vault");
         }
 
         wine.forEach( function (wine){
+            console.log("for each" + wine);
+
             // console.log(wine.name);
             var $wine_detail_template = $(
                 '<div class="col-lg-12">' + 
@@ -146,17 +152,31 @@ $('.js-search-results')
     .on('click', 'div', function () {
         // findById
         var id = $(this).attr('value');
+        console.log("This is the on click id" +id);
+
         findById(id, function (error, wine) {
             if (error) {
                 return new Error("Something went wrong.");
             }
             wine.id = id;
+            console.log("this is findbyid the wine" + wine);
 
             // Save in req.session.wine
             saveWine(wine, function (isSaved) {
                 if (isSaved) {
-                    // displayVault(wine);
                     console.log("saved");
+
+                    getSavedWines(function (error, wine){
+                        if (error) {
+                            throw error;
+                        } 
+                        else if(wine) {
+
+                            console.log("Initial display vault wine object: " + wine);
+                            displayVault(wine);
+                            displayComment(wine);
+                        }
+                    })
                 }
             });
         });
