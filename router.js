@@ -7,10 +7,6 @@ router
     .post(controller.saveWine);
 
 router
-    .route("/delete")
-    .delete(controller.deleteWine);
-
-router
     .route('/wines')
     .get(controller.getWines);
 
@@ -26,7 +22,8 @@ router
 // This is /vault/wine.com id
 router
     .route("/:id")
-    .post(controller.wineById);
+    .post(controller.wineById)
+    .delete(controller.deleteWine);
 
 router
     .all("*")
