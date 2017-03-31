@@ -18,10 +18,6 @@ router
     .route('/wines/comment')
     .post(controller.addComment);
 
-router
-    .route('/wines/update')
-    .put(controller.updateVault);
-
 // This is /vault/search/:name
 router
     .route("/search/:name")
