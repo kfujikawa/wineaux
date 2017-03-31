@@ -108,11 +108,20 @@ function displayVault(wine) {
 
         wine
             .forEach(function (wine) {
-                var $wine_detail_template = $('<div class="col-lg-12 js-single-wine"><h4></h4><button class="deleteWine">Delete' +
-                        ' Wine</button><form class="commentForm" role="form"><div class="form-group"><lab' +
-                        'el>Add Note:  </label><input type="text" class="input-sm"><button id="commentBut' +
-                        'ton">Submit</button></form><div class="col-lg-12"><ul class="js-wine-comments"><' +
-                        '/ul></div></div>');
+                var $wine_detail_template = $(
+                    '<div class="col-lg-12 js-single-wine">' + 
+                        '<h4></h4>' + 
+                            '<small class="deleteWine">Delete Wine</small>' +
+                            '<form class="commentForm" role="form">' +
+                            '<div class="commentText">' +
+                            '<label class="commentLabel">Comment:</label>' +
+                                '<input type="text" class="input">' +
+                                '<button class="button" id="commentButton">Submit</button>' +
+                            '</form>' +
+                            '<div class="col-lg-12">' +
+                                '<ul class="js-wine-comments"></ul>' +
+                            '</div>' +
+                    '</div>');
                 $wine_detail_template.attr('value', wine.id);
                 $wine_detail_template
                     .find('h4')
@@ -135,9 +144,12 @@ function displayComment(comments) {
             .forEach(function (data) {
                 var ul = $('div[value="' + data.id + '"]').find('.js-wine-comments');
                 for (var i = 0; i < data.comments.length; i++) {
-                    $(ul).append('<li>' + data.comments[i].comment);
+                    $(ul).append('<li class="list-group-item-wine">' + data.comments[i].comment);
                 }
             });
+    }
+    else {
+        console.log("No comment");
     }
 }
 
@@ -219,21 +231,36 @@ $(document).on("submit", ".commentForm", function (event) {
         } else {
             $(this)
                 .find('.js-wine-comments')
-                .append('<li>' + comment.comment);
+                .append('<li class="list-group-item-wine">' + comment.comment);
         }
     }.bind(this));
 });
 
+// Deleting a wine saved in Vault
 $('.js-wine-detail').on('click', '.deleteWine', function () {
 
     var id = parseInt($(this).parents('div').attr('value'));
 
-    deleteWine(id, function (isDeleted) {
-        if (isDeleted) {
-            console.log("deleted");
-            $(this)
-                .parent()
-                .remove();
+    findById(id, function (error, wine){
+        if(error){
+            return new Error("Cant get wine");
         }
-    }.bind(this));
-});
+        else {    
+            deleteWine(id, function (isDeleted) {
+                if (isDeleted) {
+                    console.log("deleted");
+                    $(this)
+                        .parent()
+                        .remove();
+                    getSavedWines(function (error, wine){
+                        if(error){
+                            throw error;
+                        } else if (wine){
+                            displayVault(wine);
+                        }
+                    })
+                }
+            }.bind(this));
+        }
+    })
+})

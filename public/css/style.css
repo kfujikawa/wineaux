@@ -29,3 +29,27 @@ nav{
 	color: #732D42;
 	cursor: pointer;
 }
+
+.list-group-item-wine {
+  position: relative;
+  display: block;
+  width: 50%;
+  padding: 10px 15px;
+  margin-top: 10px;
+  margin-bottom: -1px;
+  background-color: #fff;
+  border: 1px solid #ddd;
+}
+
+.commentLabel {
+  display: inline;
+  padding: .2em .6em .3em;
+  font-size: 75%;
+  font-weight: bold;
+  line-height: 1;
+  color: black;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  border-radius: .25em;
+}
