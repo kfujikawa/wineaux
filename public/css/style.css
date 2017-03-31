@@ -30,6 +30,11 @@ nav{
 	cursor: pointer;
 }
 
+h4:hover {
+	color: #732D42;
+	cursor: pointer;
+}
+
 .list-group-item-wine {
   position: relative;
   display: block;
