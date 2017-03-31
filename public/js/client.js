@@ -148,6 +148,9 @@ function displayComment(comments) {
                 }
             });
     }
+    else {
+        console.log("No comment");
+    }
 }
 
 // ================== EVENT LISTENERS ===============================//
@@ -238,12 +241,26 @@ $('.js-wine-detail').on('click', '.deleteWine', function () {
 
     var id = parseInt($(this).parents('div').attr('value'));
 
-    deleteWine(id, function (isDeleted) {
-        if (isDeleted) {
-            console.log("deleted");
-            $(this)
-                .parent()
-                .remove();
+    findById(id, function (error, wine){
+        if(error){
+            return new Error("Cant get wine");
         }
-    }.bind(this));
-});
+        else {    
+            deleteWine(id, function (isDeleted) {
+                if (isDeleted) {
+                    console.log("deleted");
+                    $(this)
+                        .parent()
+                        .remove();
+                    getSavedWines(function (error, wine){
+                        if(error){
+                            throw error;
+                        } else if (wine){
+                            displayVault(wine);
+                        }
+                    })
+                }
+            }.bind(this));
+        }
+    })
+})
