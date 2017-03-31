@@ -109,7 +109,7 @@ function displayVault(wine) {
         wine
             .forEach(function (wine) {
                 var $wine_detail_template = $(
-                    '<div class="col-lg-12 js-single-wine">' + 
+                     '<div class="col-lg-12 js-single-wine">' + 
                         '<h4></h4>' + 
                             '<small class="deleteWine">Delete Wine</small>' +
                             '<form class="commentForm" role="form">' +
@@ -147,9 +147,6 @@ function displayComment(comments) {
                     $(ul).append('<li class="list-group-item-wine">' + data.comments[i].comment);
                 }
             });
-    }
-    else {
-        console.log("No comment");
     }
 }
 
@@ -231,36 +228,21 @@ $(document).on("submit", ".commentForm", function (event) {
         } else {
             $(this)
                 .find('.js-wine-comments')
-                .append('<li class="list-group-item-wine">' + comment.comment);
+                .append('<li>' + comment.comment);
         }
     }.bind(this));
 });
 
-// Deleting a wine saved in Vault
 $('.js-wine-detail').on('click', '.deleteWine', function () {
 
     var id = parseInt($(this).parents('div').attr('value'));
 
-    findById(id, function (error, wine){
-        if(error){
-            return new Error("Cant get wine");
+    deleteWine(id, function (isDeleted) {
+        if (isDeleted) {
+            console.log("deleted");
+            $(this)
+                .parent()
+                .remove();
         }
-        else {    
-            deleteWine(id, function (isDeleted) {
-                if (isDeleted) {
-                    console.log("deleted");
-                    $(this)
-                        .parent()
-                        .remove();
-                    getSavedWines(function (error, wine){
-                        if(error){
-                            throw error;
-                        } else if (wine){
-                            displayVault(wine);
-                        }
-                    })
-                }
-            }.bind(this));
-        }
-    })
-})
+    }.bind(this));
+});
