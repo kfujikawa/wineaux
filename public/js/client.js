@@ -201,6 +201,7 @@ $('.js-search-results').on('click', 'div', function () {
                     } else if (wine) {
 
                         displayVault(wine);
+                        displayComment(wine);
                     }
                 })
             }
@@ -228,7 +229,7 @@ $(document).on("submit", ".commentForm", function (event) {
         } else {
             $(this)
                 .find('.js-wine-comments')
-                .append('<li>' + comment.comment);
+                .append('<li class="list-group-item-wine">' + comment.comment);
         }
     }.bind(this));
 });
