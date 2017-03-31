@@ -8,7 +8,7 @@ router
 
 router
     .route("/delete")
-    .post(controller.deleteWine);
+    .delete(controller.deleteWine);
 
 router
     .route('/wines')
