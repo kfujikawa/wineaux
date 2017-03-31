@@ -58,18 +58,18 @@ controller.wineById = function (req, res) {
             newProduct.vineyard = product.Vineyard;
             newProduct.vintage = product.Vintage;
 
-            Comment.findOne(
-                {wine_id: product.Id}, function (error, comments) {
-                    if (error) {
-                        console.log(error);
-                    } else {
-                        newProduct.comments = comments;
-                        res
-                            .status(200)
-                            .json(newProduct);
-                    }
+            Comment.findOne({
+                wine_id: product.Id
+            }, function (error, comments) {
+                if (error) {
+                    console.log(error);
+                } else {
+                    newProduct.comments = comments;
+                    res
+                        .status(200)
+                        .json(newProduct);
                 }
-            );
+            });
         });
 
 }
@@ -109,29 +109,29 @@ controller.addComment = function (req, res) {
         for (var i = 0; i < wines.length; i += 1) {
             if (parseInt(wines[i].id) === parseInt(req.body.id)) {
 
-                delete req.body.id;
                 wines[i].comments = wines[i].comments || [];
                 wines[i]
                     .comments
                     .push(req.body);
                 res
                     .status(201)
-                    .json(wines);
+                    .json(req.body);
             }
         }
     }
 }
 
-
 controller.deleteWine = function (req, res) {
+
+    var id = req.params.id;
 
     req.session.wines = req.session.wines || [];
 
     const wines = req.session.wines;
-    
+
     if (wines.length) {
         for (var i = 0; i < wines.length; i += 1) {
-            if (wines[i].id === req.body.id) {
+            if (wines[i].id === id) {
                 wines.splice(i, 1);
             }
         }
@@ -141,12 +141,11 @@ controller.deleteWine = function (req, res) {
         .json(req.session.wines);
 }
 
-
 // PUT update vault by removing target and updating req.body object
-controller.updateVault  = function (req, res){
+controller.updateVault = function (req, res) {
     let wines = req.session.wines;
 
-    wines = wines.filter(function (wine){
+    wines = wines.filter(function (wine) {
         return wine.id !== id;
     })
 
