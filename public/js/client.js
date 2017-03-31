@@ -109,7 +109,7 @@ function displayVault(wine) {
         wine
             .forEach(function (wine) {
                 var $wine_detail_template = $(
-                    '<div class="col-lg-12 js-single-wine">' + 
+                     '<div class="col-lg-12 js-single-wine">' + 
                         '<h4></h4>' + 
                             '<small class="deleteWine">Delete Wine</small>' +
                             '<form class="commentForm" role="form">' +
@@ -148,9 +148,6 @@ function displayComment(comments) {
                 }
             });
     }
-    else {
-        console.log("No comment");
-    }
 }
 
 // ================== EVENT LISTENERS ===============================//
@@ -184,16 +181,14 @@ $('#searchForm')
 
 //  Adding wine to vault when clicking on search result
 $('.js-search-results').on('click', 'div', function () {
-    // findById
     var id = $(this).attr('value');
-    // console.log("This is the on click id" +id);
 
     findById(id, function (error, wine) {
         if (error) {
             return new Error("Something went wrong.");
         }
         wine.id = id;
-        // console.log("this is findbyid the wine" + wine); Save in req.session.wine
+
         saveWine(wine, function (isSaved) {
             if (isSaved) {
                 console.log("saved");
@@ -204,6 +199,7 @@ $('.js-search-results').on('click', 'div', function () {
                     } else if (wine) {
 
                         displayVault(wine);
+                        displayComment(wine);
                     }
                 })
             }
@@ -241,26 +237,22 @@ $('.js-wine-detail').on('click', '.deleteWine', function () {
 
     var id = parseInt($(this).parents('div').attr('value'));
 
-    findById(id, function (error, wine){
-        if(error){
-            return new Error("Cant get wine");
+    deleteWine(id, function (isDeleted) {
+        if (isDeleted) {
+            console.log("deleted");
+            $(this)
+                .parent()
+                .remove();
+
+                getSavedWines(function (error, wine) {
+                    if (error) {
+                        throw error;
+                    } else if (wine) {
+
+                        displayVault(wine);
+                        displayComment(wine);
+                    }
+                })
         }
-        else {    
-            deleteWine(id, function (isDeleted) {
-                if (isDeleted) {
-                    console.log("deleted");
-                    $(this)
-                        .parent()
-                        .remove();
-                    getSavedWines(function (error, wine){
-                        if(error){
-                            throw error;
-                        } else if (wine){
-                            displayVault(wine);
-                        }
-                    })
-                }
-            }.bind(this));
-        }
-    })
-})
+    }.bind(this));
+});
