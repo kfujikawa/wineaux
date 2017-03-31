@@ -181,16 +181,14 @@ $('#searchForm')
 
 //  Adding wine to vault when clicking on search result
 $('.js-search-results').on('click', 'div', function () {
-    // findById
     var id = $(this).attr('value');
-    // console.log("This is the on click id" +id);
 
     findById(id, function (error, wine) {
         if (error) {
             return new Error("Something went wrong.");
         }
         wine.id = id;
-        // console.log("this is findbyid the wine" + wine); Save in req.session.wine
+
         saveWine(wine, function (isSaved) {
             if (isSaved) {
                 console.log("saved");
@@ -234,6 +232,7 @@ $(document).on("submit", ".commentForm", function (event) {
     }.bind(this));
 });
 
+// Deleting a wine saved in Vault
 $('.js-wine-detail').on('click', '.deleteWine', function () {
 
     var id = parseInt($(this).parents('div').attr('value'));
@@ -244,6 +243,16 @@ $('.js-wine-detail').on('click', '.deleteWine', function () {
             $(this)
                 .parent()
                 .remove();
+
+                getSavedWines(function (error, wine) {
+                    if (error) {
+                        throw error;
+                    } else if (wine) {
+
+                        displayVault(wine);
+                        displayComment(wine);
+                    }
+                })
         }
     }.bind(this));
 });
