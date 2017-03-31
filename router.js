@@ -8,7 +8,7 @@ router
 
 router
     .route("/delete")
-    .post(controller.deleteWine);
+    .delete(controller.deleteWine);
 
 router
     .route('/wines')
@@ -17,10 +17,6 @@ router
 router
     .route('/wines/comment')
     .post(controller.addComment);
-
-router
-    .route('/wines/update')
-    .put(controller.updateVault);
 
 // This is /vault/search/:name
 router

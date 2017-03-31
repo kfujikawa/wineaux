@@ -9,16 +9,9 @@ $(document)
                 displayComment(wine);
             }
         })
-        getSearchResults( function (error, results){
-            if (error) {
-                throw error;
-            }
-            else if(results){
-                displaySearchResults(results);
-            }
-        })
+        displayEmptySearchResults();
     })
-// ================== METHODS ===============================//
+// ======================== METHODS ===============================//
 function findById(id, callback) {
     $
         .ajax({
@@ -75,11 +68,26 @@ function saveWine(wine, cb) {
         });
 }
 
+function addComment(wine) {
+    $.ajax({
+        url: '/vault/wines/comment',
+        method: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify(commentToSend)
+        })
+        .done(function (comment) {
+            console.log(comment);
+        })
+        .fail(function (error) {
+            console.log(error);
+        });
+}
+
 function deleteWine(wine, cb) {
     $.ajax({
         url: '/vault/delete',
         data: JSON.stringify(wine),
-            method: 'POST',
+            method: 'DELETE',
             contentType: 'application/json'
         })
         .done(function (deleted) {
@@ -92,24 +100,30 @@ function deleteWine(wine, cb) {
 
 function displayVault(wine) {
     if(wine.length){
+        $('.js-wine-detail').empty();
         if(wine.length <= 1){
+            // console.log("less than 1" + wine);
             $('#user-vault').html("You have <strong>" + " " + wine.length + " " + "wine </strong> in your vault");
         }
         else if(wine.length > 1){
+            // console.log("greater than 1" + wine);
             $('#user-vault').html("You have <strong>" + " " + wine.length + " " + "wines </strong> in your vault");
         }
 
         wine.forEach( function (wine){
+            // console.log("for each" + wine);
+
             // console.log(wine.name);
             var $wine_detail_template = $(
-                '<div class="col-lg-12">' + 
+                '<div class="col-lg-12 js-single-wine">' + 
                     '<h4></h4>' + 
                     '<small class="deleteWine">Delete Wine</small>' +
                     '<form id="commentForm" role="form">' + 
                     '<div class="form-group">' +
                         '<label>Add Note:  </label>' +
                         '<input type="text" class="input-sm">' + 
-                    '<button id="commentButton">Submit</button></form>' + 
+                    '<button id="commentButton">Submit</button></form>' +
+                    '<div class="col-lg-12 js-wine-comments"><div class=js-comment></div></div>' +
                 '</div>');
             $wine_detail_template.attr('value', wine.id);
             $wine_detail_template
@@ -122,72 +136,43 @@ function displayVault(wine) {
     }
 }
 
-function displaySearchResults(results) {
-    if(results.length){
-        $('.js-vault').html("Select A Wine To Add To Vault");
-        // results.forEach( function (result){
-        //     var $search_detail_template = $(
-        //         '<div class="col-lg-12">' + 
-        //             '<h4></h4>' + 
-        //             '<small class="deleteWine">Delete</small>' +
-        //             '<form id="commentForm" role="form">' + 
-        //             '<div class="form-group">' +
-        //                 '<label>Add Note:  </label>' +
-        //                 '<input type="text" class="input-sm">' + 
-        //             '<button id="commentButton">Submit</button></form>' + 
-        //         '</div>');
-        //     $search_detail_template
-        //         .find('h4')
-        //         .text(wine.name);
-        //     $('.js-wine-detail').append($search_detail_template);
-        // })
-    } else {
-        $('.js-vault').html("Search For A Wine To Add It To Vault");
+function displayEmptySearchResults() {
+    $('.js-vault').html("Search For A Wine To Add It To Vault");
+}
+
+function displayComment(wines) {
+    if(wines.length){
+
+        wines.forEach( function (wines){
+            var comments = wines.comments;
+            var id = wines.id
+
+            if(Array.isArray(comments)){
+                console.log(comments);
+
+                comments.forEach(function (comment){
+                    var comment = comment.comment;
+                    console.log("the comment" + comment);
+
+                    var $comment_detail_template = $('<div><p></p></div>');
+                    $comment_detail_template
+                        .find('p')
+                        .text(comment);
+                        
+                    $('.js-wine-comments').append($comment_detail_template);
+                })  
+            }
+            else{
+            console.log("no comment for this wine");
+            var $comment_detail_template2 = $('<div><p>Nothing</p></div>');
+                        
+                    $('.js-wine-comments').append($comment_detail_template2);
+            }
+        })
     }
-}
-
-function displayComment(wine) {
-    wine.forEach( function (wine){
-        var comments = wine.comments;
-        if(comments){
-            // console.log(comments);
-            comments.forEach(function (comment){
-                var $comment_detail_template = $('<div class="col-sm-4 text-center"><p></p></div>');
-                $comment_detail_template
-                    .find('p')
-                    .text(comment.comment);
-
-                $('.js-wine-comment').append($comment_detail_template);
-            })
-        
-        }else{
-            // console.log("no comment for this wine");
-        }
-    })
-}
+} 
 
 // ================== EVENT LISTENERS ===============================//
-
-//  Adding wine to vault
-$('.js-search-results')
-    .on('click', 'div', function () {
-        // findById
-        var id = $(this).attr('value');
-        findById(id, function (error, wine) {
-            if (error) {
-                return new Error("Something went wrong.");
-            }
-            wine.id = id;
-
-            // Save in req.session.wine
-            saveWine(wine, function (isSaved) {
-                if (isSaved) {
-                    // displayVault(wine);
-                    console.log("saved");
-                }
-            });
-        });
-    });
 
 // Searching wine.com API for wine and displaying results
 $('#searchForm').submit(function(event){
@@ -213,21 +198,51 @@ $('#searchForm').submit(function(event){
         });
 })
 
-// Adding a comment to wine in Vault
-$('#commentForm').submit(function(event){
-    event.preventDefault();
+//  Adding wine to vault when clicking on search result
+$('.js-search-results')
+    .on('click', 'div', function () {
+        // findById
+        var id = $(this).attr('value');
+        // console.log("This is the on click id" +id);
 
-    var id = $(this)
-        .parent()
-        .attr('value');
+        findById(id, function (error, wine) {
+            if (error) {
+                return new Error("Something went wrong.");
+            }
+            wine.id = id;
+            // console.log("this is findbyid the wine" + wine);
+
+            // Save in req.session.wine
+            saveWine(wine, function (isSaved) {
+                if (isSaved) {
+                    console.log("saved");
+
+                    getSavedWines(function (error, wine){
+                        if (error) {
+                            throw error;
+                        } 
+                        else if(wine) {
+
+                            // console.log("Initial display vault wine object: " + wine);
+                            displayVault(wine);
+                            displayComment(wine);
+                        }
+                    })
+                }
+            });
+        });
+    });
+
+// Adding a comment to a saved wine in Vault
+$(document).on("submit", "#commentForm", function (event){
+    event.preventDefault();
+    var id = $(this).parent().attr('value');
+    console.log(id);
 
     var commentToSend = {
         id: id,
-        comment: $(this)
-            .find('input')
-            .val()
-    };
-
+        comment: $(this).find('input').val()
+    }
     console.log(commentToSend);
 
     $
@@ -237,28 +252,38 @@ $('#commentForm').submit(function(event){
             contentType: 'application/json',
             data: JSON.stringify(commentToSend)
         })
-        .done(function (comment) {
+        .done(function(comment){
             console.log(comment);
         })
-        .fail(function (error) {
+        .fail(function(error){
             console.log(error);
         });
-});
+})
 
-// Delete wine
-// $('.js-wine-detail')
-//     .on('click', '.deleteWine', function () {
-//         console.log("clicked");
-//         var id = $(this).parent().attr('value')
-//         console.log(id);
-//         var wine = $(this).parent();
-//         console.log(wine);
+// Deleting a saved wine in Vault
+$('.js-wine-detail')
+    .on('click', '.deleteWine', function () {
+        // findById
+        console.log("clicked");
+        var entireObject = $(this).parent().text();
+        var id6 = $(this).find().parent('value');
 
-//         // Delete in req.session.wine
-//         deleteWine(wine, function (isDeleted) {
-//             if (isDeleted) {
-//                 // displayVault(wine);
-//                 console.log("wine deleted!" + id);
-//             }
-//         });
-//     });
+        console.log("This is the on click id" + entireObject);
+        console.log("This is the on click id" + id6);
+
+            deleteWine(entireObject, function (isDeleted) {
+                if (isDeleted) {
+                    console.log("deleted");
+
+                    getSavedWines(function (error, wine){
+                        if (error) {
+                            throw error;
+                        } 
+                        else if(wine) {
+                            displayVault(wine);
+                            displayComment(wine);
+                        }
+                    })
+                }
+            });
+    });

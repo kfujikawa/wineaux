@@ -128,11 +128,11 @@ controller.deleteWine = function (req, res) {
     req.session.wines = req.session.wines || [];
 
     const wines = req.session.wines;
+    
     if (wines.length) {
         for (var i = 0; i < wines.length; i += 1) {
             if (wines[i].id === req.body.id) {
-                delete req.body[i]
-                console.log(req.body);
+                wines.splice(i, 1);
             }
         }
     }
