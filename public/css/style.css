@@ -34,6 +34,9 @@ h4:hover {
 	color: #732D42;
 	cursor: pointer;
 }
+.searchResultsBox{
+	overflow: auto;
+}
 
 .list-group-item-wine {
   position: relative;
