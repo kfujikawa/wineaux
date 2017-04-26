@@ -1,4 +1,4 @@
-# [Wineaux] Wineaux (https://wineaux.herokuapp.com/)
+# [Wineaux](https://wineaux.herokuapp.com/)
 
 ## Overview 
 
