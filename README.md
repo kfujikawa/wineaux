@@ -1,7 +1,6 @@
-Wineaux Node.js Project
-=================================
+# [Wineaux] Wineaux (https://wineaux.herokuapp.com/)
 
-https://github.com/kfujikawa/wineaux
+## Overview 
 
 Integration with wine.com API in order to allow users to search for a wine, add it to their vault and add tasting notes.  
 
