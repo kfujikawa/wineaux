@@ -7,9 +7,6 @@
   },
   "description": "node capstone thinkful",
   "main": "server.js",
-  "engines": {
-    "node": "7.3.0"
-  },
   "scripts": {
     "heroku-prebuild": "npm install nodemon",
     "start": "nodemon server.js",
